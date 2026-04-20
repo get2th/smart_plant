@@ -2,6 +2,7 @@
 #include <DHT11.h>
 #include <SoftwareSerial.h>
 #include "DS3231.h"
+#include <Wire.h>
 DS3231 clock;
 RTCDateTime dt;
 DHT11 dht11(2);
@@ -11,17 +12,27 @@ int sensorf2Pin = A2;
 int sensorf2Value = 0;
 int wdpin = A1;
 int wdValue = 0;
-int buzzerPin
-char weekDay[][4] = {"Mon","Tue","Wed","Thu","Fri",};
+int buzzerPin;
+char weekDay[][4] = {"Mon","Tue","Wed","Thu","Fri"};
 
 void setup() {
  Serial.begin(9600);
- Serial.println("1и");
- Serial.println("2");
+ clock.begin();
+  Wire.begin();
+ Serial.println("test 1");
 }
 
 void loop() {
   int temperature = 0;
+  dt = clock.getDateTime();
+  Serial.println("test 2");
+  Serial.print("Raw data: ");
+  Serial.print(dt.year);   Serial.print("-");
+  Serial.print(dt.month);  Serial.print("-");
+  Serial.print(dt.day);    Serial.print(" ");
+  Serial.print(dt.hour);   Serial.print(":");
+  Serial.print(dt.minute); Serial.print(":");
+  Serial.print(dt.second); Serial.println("");
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
   if (result == 0) {
