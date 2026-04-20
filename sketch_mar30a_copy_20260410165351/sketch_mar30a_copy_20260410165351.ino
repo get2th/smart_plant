@@ -3,16 +3,20 @@
 #include <SoftwareSerial.h>
 #include "DS3231.h"
 #include <Wire.h>
+
 DS3231 clock;
 RTCDateTime dt;
 DHT11 dht11(2);
+
 int sensorf1Pin = A0;
 int sensorf1Value = 0;
 int sensorf2Pin = A2;
 int sensorf2Value = 0;
 int wdpin = A1;
-int wdValue = 0;
+int wdValue;
 int buzzerPin;
+int humidity;
+int result;
 char weekDay[][4] = {"Mon","Tue","Wed","Thu","Fri"};
 
 void setup() {
@@ -33,8 +37,7 @@ void loop() {
   Serial.print(dt.hour);   Serial.print(":");
   Serial.print(dt.minute); Serial.print(":");
   Serial.print(dt.second); Serial.println("");
-  int humidity = 0;
-  int result = dht11.readTemperatureHumidity(temperature, humidity);
+  result = dht11.readTemperatureHumidity(temperature, humidity);
   if (result == 0) {
     Serial.print("Temperature: ");
     Serial.print(temperature);
