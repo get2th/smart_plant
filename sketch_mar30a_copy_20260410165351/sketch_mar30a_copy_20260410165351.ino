@@ -9,6 +9,8 @@ DHT11 dht11(2);
 int sensorf1Pin = A0;
 int sensorf1Value = 0;
 int sensorf2Pin = A2;
+const int relay1 = 2;
+const int relay2 = 3;
 int sensorf2Value = 0;
 int wdpin = A1;
 int wdValue = 0;
@@ -20,6 +22,10 @@ void setup() {
  clock.begin();
   Wire.begin();
  Serial.println("test 1");
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  digitalWrite(relay1, HIGH);                
+  digitalWrite(relay2, HIGH);
 }
 
 void loop() {
@@ -36,20 +42,35 @@ void loop() {
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
   if (result == 0) {
-        Serial.print("Temperature: ");
-        Serial.print(temperature);
-        Serial.print(" °C\tHumidity: ");
-        Serial.print(humidity);
-        Serial.println(" %");
-sensorf1Value = analogRead(sensorf1Pin);
-sensorf2Value = analogRead(sensorf2Pin);
-wdValue = analogRead(wdpin);
-if (wdValue <=300){
-  //tone(buzzerPin, 1000);
+    Serial.print("Temperature: ");
+    Serial.print(temperature);
+    Serial.print(" °C\tHumidity: ");
+    Serial.print(humidity);
+    Serial.println(" %");
+    sensorf1Value = analogRead(sensorf1Pin);
+    sensorf2Value = analogRead(sensorf2Pin);
+    wdValue = analogRead(wdpin);
+    if (wdValue <=300){
+      tone(buzzerPin, 1000);
+    }
+    else {
+    noTone(buzzerPin);
+    }
+    if (sensorf1Value >= 300){
+      digitalWrite(relay1, LOW);
+    }
+    else{
+
+    }
+    if (sensorf2Value >= 300){
+      digitalWrite(relay2, LOW);
+    }
+    else{
+
+    }
+  else{
+
   }
-else {
-  //noTone(buzzerPin);
-}
 Serial.print("Вологість землі першої квітки: ");
 Serial.println(sensorf1Value);
 Serial.print("Вологість землі другої квітки: ");
