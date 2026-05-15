@@ -46,36 +46,37 @@ void loop() {
   }
   else {
     noTone(buzzerPin);
-  }
-  if (result == 0) {
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.print(" °C\tHumidity: ");
-    Serial.print(humidity);
-    Serial.println(" %");
-    sensorf1Value = analogRead(sensorf1Pin);
-    sensorf2Value = analogRead(sensorf2Pin);
-    wdValue = analogRead(wdpin);
-    if (dt.hour >= 17){
-      if (sensorf1Value >= 300){
-      digitalWrite(relay1, LOW);
+  
+    if (result == 0) {
+      Serial.print("Temperature: ");
+      Serial.print(temperature);
+      Serial.print(" °C\tHumidity: ");
+      Serial.print(humidity);
+      Serial.println(" %");
+      sensorf1Value = analogRead(sensorf1Pin);
+      sensorf2Value = analogRead(sensorf2Pin);
+      wdValue = analogRead(wdpin);
+      if (dt.hour >= 17){
+        if (sensorf1Value >= 300){
+        digitalWrite(relay1, LOW);
+        }
+        else{
+
+        }
+        if (sensorf2Value >= 300){
+          digitalWrite(relay2, LOW);
+        }
+        else{
+
+        }
       }
       else{
 
       }
-      if (sensorf2Value >= 300){
-        digitalWrite(relay2, LOW);
       }
-      else{
-
-      }
-    }
     else{
 
-    }
-    }
-  else{
-
+  }
   }
 Serial.print("Вологість землі першої квітки: ");
 Serial.println(sensorf1Value);
