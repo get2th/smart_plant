@@ -41,6 +41,12 @@ void loop() {
   Serial.print(dt.second); Serial.println("");
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
+  if (wdValue <=300){
+    tone(buzzerPin, 1000);
+  }
+  else {
+    noTone(buzzerPin);
+  }
   if (result == 0) {
     Serial.print("Temperature: ");
     Serial.print(temperature);
@@ -50,23 +56,23 @@ void loop() {
     sensorf1Value = analogRead(sensorf1Pin);
     sensorf2Value = analogRead(sensorf2Pin);
     wdValue = analogRead(wdpin);
-    if (wdValue <=300){
-      tone(buzzerPin, 1000);
-    }
-    else {
-    noTone(buzzerPin);
-    }
-    if (sensorf1Value >= 300){
+    if (dt.hour >= 17){
+      if (sensorf1Value >= 300){
       digitalWrite(relay1, LOW);
+      }
+      else{
+
+      }
+      if (sensorf2Value >= 300){
+        digitalWrite(relay2, LOW);
+      }
+      else{
+
+      }
     }
     else{
 
     }
-    if (sensorf2Value >= 300){
-      digitalWrite(relay2, LOW);
-    }
-    else{
-
     }
   else{
 
@@ -78,7 +84,7 @@ Serial.println(sensorf2Value);
 Serial.print("Обєм води: ");
 Serial.println(wdValue);
 delay(1000);
-  }
+  
 
 }
 
