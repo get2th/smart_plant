@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include <Arduino.h>             
 #include <DHT11.h>
 #include <SoftwareSerial.h>
 #include "DS3231.h"
@@ -11,8 +11,10 @@ DHT11 dht11(2);
 int sensorf1Pin = A0;
 int sensorf1Value = 0;
 int sensorf2Pin = A2;
-const int relay1 = 2;
-const int relay2 = 3;
+const int relay1 = 3;
+const int relay2 = 4;
+
+
 int sensorf2Value = 0;
 int wdpin = A1;
 int wdValue;
@@ -23,15 +25,16 @@ char weekDay[][4] = {"Mon","Tue","Wed","Thu","Fri"};
 
 void setup() {
   Serial.begin(9600);
-  clock.begin();
-  Wire.begin();
-<<<<<<< HEAD
  Serial.println("test 1");
+  clock.begin();
+  Serial.println("test 1");
+  Wire.begin();
+ Serial.println("test 2");
   pinMode(relay1, OUTPUT);
   pinMode(relay2, OUTPUT);
   digitalWrite(relay1, HIGH);                
   digitalWrite(relay2, HIGH);
-  Serial.println("test 1");
+  Serial.println("test 3");
 }
 
 void loop() {
@@ -45,7 +48,7 @@ void loop() {
   Serial.print(dt.hour);   Serial.print(":");
   Serial.print(dt.minute); Serial.print(":");
   Serial.print(dt.second); Serial.println("");
-<<<<<<< HEAD
+
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
   if (wdValue <=300){
@@ -93,7 +96,7 @@ Serial.print("Обєм води: ");
 Serial.println(wdValue);
 delay(1000);
   
-=======
+
   result = dht11.readTemperatureHumidity(temperature, humidity);
   if (result == 0) {
     Serial.print("Temperature: ");
@@ -118,7 +121,7 @@ delay(1000);
       Serial.println(wdValue);
       delay(1000);
   }
->>>>>>> 9ef8f449cca5dbc99c62c35191acf3934554ca28
+
 
 }
 
