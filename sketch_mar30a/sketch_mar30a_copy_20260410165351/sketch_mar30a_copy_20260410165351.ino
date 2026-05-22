@@ -35,6 +35,11 @@ void setup() {
   digitalWrite(relay1, HIGH);                
   digitalWrite(relay2, HIGH);
   Serial.println("test 3");
+  Serial.println("set time!");
+  clock.setDateTime(__DATE__, __TIME__); 
+  dt = clock.convertStringToDateTime(__DATE__, __TIME__);
+  dt = addSeconds(dt, 13); 
+  clock.setDateTime(dt);
 }
 
 void loop() {
@@ -48,6 +53,7 @@ void loop() {
   Serial.print(dt.hour);   Serial.print(":");
   Serial.print(dt.minute); Serial.print(":");
   Serial.print(dt.second); Serial.println("");
+  wdValue = analogRead(wdpin);
 
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
@@ -65,10 +71,15 @@ void loop() {
       Serial.println(" %");
       sensorf1Value = analogRead(sensorf1Pin);
       sensorf2Value = analogRead(sensorf2Pin);
-      wdValue = analogRead(wdpin);
+      Serial.print("Вологість землі першої квітки: ");
+      Serial.println(sensorf1Value);
+      Serial.print("Вологість землі другої квітки: ");
+      Serial.println(sensorf2Value);
+      Serial.print("Обєм води: ");
+      Serial.println(wdValue);
       if (dt.hour >= 17){
         if (sensorf1Value >= 300){
-        digitalWrite(relay1, LOW);
+          digitalWrite(relay1, LOW);
         }
         else{
 
@@ -88,40 +99,9 @@ void loop() {
 
   }
   }
-Serial.print("Вологість землі першої квітки: ");
-Serial.println(sensorf1Value);
-Serial.print("Вологість землі другої квітки: ");
-Serial.println(sensorf2Value);
-Serial.print("Обєм води: ");
-Serial.println(wdValue);
-delay(1000);
-  
 
-  result = dht11.readTemperatureHumidity(temperature, humidity);
-  if (result == 0) {
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.print(" °C\tHumidity: ");
-    Serial.print(humidity);
-    Serial.println(" %");
-    sensorf1Value = analogRead(sensorf1Pin);
-    sensorf2Value = analogRead(sensorf2Pin);
-    wdValue = analogRead(wdpin);
-    if (wdValue <=300){
-      //tone(buzzerPin, 1000);
-    }
-    else {
-      //noTone(buzzerPin);
-    }
-      Serial.print("Вологість землі першої квітки: ");
-      Serial.println(sensorf1Value);
-      Serial.print("Вологість землі другої квітки: ");
-      Serial.println(sensorf2Value);
-      Serial.print("Обєм води: ");
-      Serial.println(wdValue);
-      delay(1000);
+delay(1000);
   }
 
 
-}
 
