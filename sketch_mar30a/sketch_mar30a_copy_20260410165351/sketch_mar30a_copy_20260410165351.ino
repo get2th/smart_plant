@@ -36,10 +36,13 @@ void setup() {
   digitalWrite(relay2, HIGH);
   Serial.println("test 3");
   Serial.println("set time!");
-  clock.setDateTime(__DATE__, __TIME__); 
-  dt = clock.convertStringToDateTime(__DATE__, __TIME__);
-  dt = addSeconds(dt, 13); 
-  clock.setDateTime(dt);
+  
+  my_clock_set(); // разово синхронізує час і додає 11 сек для точності
+  
+  //clock.setDateTime(__DATE__, __TIME__); 
+  //dt = clock.convertStringToDateTime(__DATE__, __TIME__);
+  //dt = addSeconds(dt, 13); 
+  //clock.setDateTime(dt);
 }
 
 void loop() {
@@ -104,4 +107,31 @@ delay(1000);
   }
 
 
+// Синхронізує час і додає ще 11 секунд
+void my_clock_set(){
+  int hour, minute, second;
+  sscanf(__TIME__, "%d:%d:%d", &hour, &minute, &second);
+  second += 11;
+  if (second >= 60) {
+    second -= 60;
+    minute++;
+    if (minute >= 60) {
+      minute = 0;
+      hour++;
+      if (hour >= 24) hour = 0;
+    }
+  }
 
+  // Розбір дати
+  char monthStr[4];
+  int day, year, month = 0;
+  sscanf(__DATE__, "%s %d %d", monthStr, &day, &year);
+  const char* months[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+  for (int i = 0; i < 12; i++) {
+    if (strncmp(monthStr, months[i], 3) == 0) month = i + 1;
+  }
+
+  clock.setDateTime(year, month, day, hour, minute, second);
+  Serial.println("RTC синхронізовано з +11 секунд");
+
+}
