@@ -12,13 +12,12 @@ int sensorf1Pin = A0;
 int sensorf1Value = 0;
 int sensorf2Pin = A2;
 const int relay1 = 3;
-const int relay2 = 4;
+const int buzzerPin = 5; 
 
 
 int sensorf2Value = 0;
 int wdpin = A1;
 int wdValue;
-int buzzerPin;
 int humidity;
 int result;
 char weekDay[][4] = {"Mon","Tue","Wed","Thu","Fri"};
@@ -31,18 +30,19 @@ void setup() {
   Wire.begin();
  Serial.println("test 2");
   pinMode(relay1, OUTPUT);
-  pinMode(relay2, OUTPUT);
-  digitalWrite(relay1, HIGH);                
-  digitalWrite(relay2, HIGH);
+  digitalWrite(relay1, LOW);                
   Serial.println("test 3");
   Serial.println("set time!");
-  
   my_clock_set(); // разово синхронізує час і додає 11 сек для точності
   
   //clock.setDateTime(__DATE__, __TIME__); 
   //dt = clock.convertStringToDateTime(__DATE__, __TIME__);
   //dt = addSeconds(dt, 13); 
   //clock.setDateTime(dt);
+
+
+
+
 }
 
 void loop() {
@@ -60,8 +60,9 @@ void loop() {
 
   int humidity = 0;
   int result = dht11.readTemperatureHumidity(temperature, humidity);
-  if (wdValue <=300){
+  if (wdValue <=550){
     tone(buzzerPin, 1000);
+    Serial.println("test 0");
   }
   else {
     noTone(buzzerPin);
@@ -80,17 +81,20 @@ void loop() {
       Serial.println(sensorf2Value);
       Serial.print("Обєм води: ");
       Serial.println(wdValue);
-      if (dt.hour >= 17){
+      if (dt.hour >= 10){
         if (sensorf1Value >= 300){
-          digitalWrite(relay1, LOW);
+          digitalWrite(relay1, HIGH);
+          Serial.print("test 4");
         }
         else{
+          digitalWrite(relay1, LOW);
 
         }
         if (sensorf2Value >= 300){
-          digitalWrite(relay2, LOW);
+          Serial.print("test 5");  
         }
         else{
+          digitalWrite(relay1, LOW);
 
         }
       }
